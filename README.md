@@ -41,16 +41,17 @@ kafka-spring-test/
 
 ### 1. Запуск Kafka локально
 
-Запустите Kafka, Zookeeper и Kafka UI используя Docker Compose:
+Запустите Kafka в режиме KRaft (без Zookeeper) и Kafka UI используя Docker Compose:
 
 ```bash
 docker-compose up -d
 ```
 
 Это запустит:
-- **Zookeeper** на порту `2181`
-- **Kafka** на порту `9092`
+- **Kafka** (версия 7.6.0 в режиме KRaft) на порту `9092`
 - **Kafka UI** на порту `8090` (доступен по адресу http://localhost:8090)
+
+> **Примечание:** Используется современный режим KRaft (Kafka Raft) вместо устаревшего Zookeeper. Начиная с Kafka 3.x, Zookeeper больше не требуется!
 
 Проверить статус контейнеров:
 
@@ -188,6 +189,16 @@ docker-compose down -v
 Логи можно увидеть в консоли при запуске приложения.
 
 ## Архитектура
+
+### Kafka в режиме KRaft
+- **KRaft (Kafka Raft)** - современная архитектура Kafka без Zookeeper
+- Начиная с Kafka 3.x, Zookeeper объявлен устаревшим (deprecated)
+- KRaft использует встроенный consensus протокол Raft
+- Преимущества:
+  - Упрощенная архитектура (меньше компонентов)
+  - Быстрее старт и восстановление
+  - Лучшая масштабируемость
+  - Проще в настройке и поддержке
 
 ### Producer
 - `KafkaProducerService` - отправляет сообщения в Kafka топик
